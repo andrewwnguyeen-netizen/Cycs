@@ -9,32 +9,12 @@
 <meta name="theme-color" content="#1C1218" media="(prefers-color-scheme: dark)">
 <title>Cycle · Meal & Routine Planner</title>
 <meta name="apple-mobile-web-app-title" content="Cycle">
-<link rel="apple-touch-icon" id="pwa-icon" href="">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<link rel="apple-touch-icon" sizes="167x167" href="icon-167.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icon-152.png">
+<link rel="apple-touch-icon" sizes="120x120" href="icon-120.png">
 <link rel="manifest" href="manifest.json">
-<script>
-(function(){
-  function mkIcon(sz){
-    var c=document.createElement('canvas');
-    c.width=c.height=sz;
-    var x=c.getContext('2d');
-    var r=sz*0.2237;
-    var g=x.createLinearGradient(0,0,sz,sz);
-    g.addColorStop(0,'#F07A75');g.addColorStop(0.5,'#E8524A');g.addColorStop(1,'#C93F38');
-    x.beginPath();x.moveTo(r,0);x.lineTo(sz-r,0);x.arcTo(sz,0,sz,r,r);
-    x.lineTo(sz,sz-r);x.arcTo(sz,sz,sz-r,sz,r);x.lineTo(r,sz);
-    x.arcTo(0,sz,0,sz-r,r);x.lineTo(0,r);x.arcTo(0,0,r,0,r);x.closePath();
-    x.fillStyle=g;x.fill();x.save();x.clip();
-    var gl=x.createLinearGradient(0,0,0,sz*0.55);
-    gl.addColorStop(0,'rgba(255,255,255,0.18)');gl.addColorStop(1,'rgba(255,255,255,0)');
-    x.fillStyle=gl;x.fillRect(0,0,sz,sz*0.55);x.restore();
-    x.font=Math.round(sz*0.56)+'px serif';
-    x.textAlign='center';x.textBaseline='middle';
-    x.fillText(String.fromCodePoint(127800),sz/2,sz/2+sz*0.02);
-    return c.toDataURL('image/png');
-  }
-  try{document.getElementById('pwa-icon').href=mkIcon(180);}catch(e){}
-})();
-</script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap');
 
@@ -2501,20 +2481,7 @@ updateConflictBanner();
 
 <script>
 if('serviceWorker' in navigator){
-  // Inline service worker via blob
-  const swCode=`
-self.addEventListener('install',e=>e.waitUntil(
-  caches.open('cycle-v15').then(c=>c.addAll([location.pathname]))
-));
-self.addEventListener('fetch',e=>e.respondWith(
-  caches.match(e.request).then(r=>r||fetch(e.request).catch(()=>caches.match(e.request)))
-));
-self.addEventListener('activate',e=>e.waitUntil(
-  caches.keys().then(keys=>Promise.all(keys.filter(k=>k!=='cycle-v15').map(k=>caches.delete(k))))
-));`;
-  const blob=new Blob([swCode],{type:'application/javascript'});
-  const url=URL.createObjectURL(blob);
-  navigator.serviceWorker.register(url).catch(()=>{});
+  navigator.serviceWorker.register('./sw.js').catch(()=>{});
 }
 </script>
 </main>
